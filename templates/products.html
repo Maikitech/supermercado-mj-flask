@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Produtos - Supermercado MJ</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Estilos do Layout Moderno */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #333; 
+            background-image: 
+                linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+                url('https://www.doutorfinancas.pt/wp-content/uploads/2021/01/grocery-shopping_t20_wl8X3e.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            padding-bottom: 250px; /* Espaço para o rodapé fixo */
+        }
+        .navbar {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        .footer {
+            background-color: #2c3e50; color: #ecf0f1; padding-top: 3rem; padding-bottom: 2rem;
+            position: fixed; bottom: 54px; width: 100%; z-index: 1000;
+        }
+        .footer h5 { color: #ffffff; font-weight: 600; }
+        .footer a { color: #bdc3c7; text-decoration: none; transition: color 0.3s; }
+        .footer a:hover { color: #ffffff; }
+        .footer .social-icons a { font-size: 1.5rem; margin: 0 0.5rem; }
+        .copyright {
+            background-color: #1a252f; padding: 1rem 0; color: #bdc3c7; font-size: 0.9rem; text-align: center;
+            position: fixed; bottom: 0; width: 100%; z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(90deg, #16a085, #27ae60);">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{ url_for('web2.index') }}"><i class="bi bi-basket2-fill"></i> Supermercado MJ</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('web2.products') }}">Produtos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('web2.customers') }}">Clientes</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('web2.orders') }}">Pedidos</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container my-5">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="card shadow-sm border-0" style="background-color: rgba(255, 255, 255, 0.95);">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1 class="text-dark display-5 fw-bold">Nossos Produtos</h1>
+                    <a href="{{ url_for('web2.create_product') }}" class="btn btn-success btn-lg shadow-sm">
+                        <i class="bi bi-plus-circle-fill me-2"></i>Adicionar Novo Produto
+                    </a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Descrição</th>
+                                <th>Preço</th>
+                                <th class="text-end">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in products %}
+                            <tr>
+                                <td>{{ product.id }}</td>
+                                <td><strong>{{ product.name }}</strong></td>
+                                <td>{{ product.description }}</td>
+                                <td>R$ {{ "%.2f"|format(product.price) }}</td>
+                                <td class="text-end">
+                                    <a href="{{ url_for('web2.update_product', id=product.id) }}" class="btn btn-sm btn-outline-primary">Editar</a>
+                                    <a href="{{ url_for('web2.delete_product', id=product.id) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Tem certeza que deseja deletar este produto?');">Excluir</a>
+                                </td>
+                            </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-5">
+                                        <h5>Nenhum produto cadastrado ainda.</h5>
+                                        <p>Clique em "Adicionar Novo Produto" para começar.</p>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-4">
+                    <a href="{{ url_for('web2.index') }}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left-circle me-2"></i>Voltar para o Início
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container"><div class="row"><div class="col-md-4 mb-3"><h5>Supermercado MJ</h5><p>Sua solução completa para gestão de supermercados.</p></div><div class="col-md-4 mb-3"><h5>Links Rápidos</h5><ul class="list-unstyled"><li><a href="{{ url_for('web2.products') }}">Nossos Produtos</a></li><li><a href="{{ url_for('web2.customers') }}">Área do Cliente</a></li><li><a href="#">Sobre Nós</a></li></ul></div><div class="col-md-4 mb-3"><h5>Siga-nos</h5><div class="social-icons"><a href="#"><i class="bi bi-facebook"></i></a><a href="#"><i class="bi bi-instagram"></i></a><a href="#"><i class="bi bi-twitter-x"></i></a></div></div></div></div>
+    </footer>
+    <div class="copyright text-center">&copy; 2025 Supermercado MJ. Todos os direitos reservados.</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

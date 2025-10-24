@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Supermercado MJ{% endblock %}</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #333; 
+            background-image: 
+                linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+                url('https://www.doutorfinancas.pt/wp-content/uploads/2021/01/grocery-shopping_t20_wl8X3e.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+        .navbar { box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+        .navbar-brand { font-weight: 700; font-size: 1.5rem; }
+
+        /* --- ESTILOS PADRÃO (PARA CELULAR - HORIZONTAL FORÇADO) --- */
+        .footer {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 1rem 0; /* Espaçamento vertical mínimo */
+        }
+
+        /* AQUI ESTÁ A MUDANÇA PRINCIPAL */
+        .footer .row {
+            display: flex; /* Ativa o layout flexível */
+            justify-content: space-around; /* Distribui o espaço entre os itens */
+            align-items: center; /* Alinha verticalmente no centro */
+            text-align: center; /* Centraliza o texto dentro de cada coluna */
+        }
+        
+        /* Força cada coluna a ocupar 1/3 do espaço e não quebrar a linha */
+        .footer .col-md-4 {
+            flex: 1; /* Faz cada coluna crescer igualmente */
+            min-width: 0; /* Necessário para o flexbox funcionar corretamente */
+            padding: 0 5px; /* Adiciona um pequeno espaçamento lateral */
+        }
+
+        /* Reduz drasticamente os textos */
+        .footer h5 { font-size: 0.9rem; margin-bottom: 0.3rem; }
+        .footer p { display: none; } /* Esconde o parágrafo de descrição */
+        .footer a { font-size: 0.8rem; text-decoration: none; color: #bdc3c7; }
+        .footer a:hover { color: #ffffff; }
+
+        /* Transforma a lista de links em uma coluna compacta */
+        .footer .list-unstyled {
+            padding: 0;
+            margin: 0;
+            line-height: 1.2; /* Deixa as linhas mais próximas */
+        }
+
+        .footer .social-icons a { font-size: 1.2rem; margin: 0 0.3rem; }
+
+        .copyright {
+            background-color: #1a252f;
+            padding: 0.75rem 0;
+            color: #bdc3c7;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        /* --- ESTILOS PARA TELAS GRANDES (DESKTOP) --- */
+        @media (min-width: 768px) {
+            body {
+                padding-bottom: 180px; 
+            }
+
+            .footer {
+                position: fixed;
+                bottom: 54px;
+                width: 100%;
+                z-index: 1000;
+                padding-top: 3rem;
+                padding-bottom: 2rem;
+                text-align: left; /* Restaura o alinhamento original */
+            }
+
+            /* Faz os parágrafos reaparecerem no desktop */
+            .footer p {
+                display: block;
+            }
+
+            /* Devolve o comportamento padrão de coluna do Bootstrap */
+            .footer .col-md-4 {
+                flex: none; /* Desativa a regra do flex */
+                width: 33.333%; /* Define a largura de volta */
+            }
+
+            .copyright {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+                z-index: 1000;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(90deg, #16a085, #27ae60);">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{ url_for('web2.index') }}"><i class="bi bi-basket2-fill"></i> Supermercado MJ</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('web2.products') }}">Produtos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('web2.customers') }}">Clientes</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('web2.orders') }}">Pedidos</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        {% block content %}
+        <div class="text-center text-white my-5">
+            <h1 class="display-4 fw-bold">Bem-vindo ao Supermercado MJ</h1>
+            <p class="lead">Sua solução completa para gestão de supermercados.</p>
+        </div>
+        {% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5>Supermercado MJ</h5>
+                    <p>Sua solução completa para gestão de supermercados.</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Links Rápidos</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('web2.products') }}">Nossos Produtos</a></li>
+                        <li><a href="{{ url_for('web2.customers') }}">Área do Cliente</a></li>
+                        <li><a href="#">Sobre Nós</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Siga-nos</h5>
+                    <div class="social-icons">
+                        <a href="#"><i class="bi bi-facebook"></i></a>
+                        <a href="#"><i class="bi bi-instagram"></i></a>
+                        <a href="#"><i class="bi bi-twitter-x"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <div class="copyright text-center">&copy; 2025 Supermercado MJ. Todos os direitos reservados.</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
