@@ -41,7 +41,9 @@ Este projeto é uma aplicação web completa desenvolvida para o trabalho práti
 
 O sistema foi modelado com três entidades principais (`Customer`, `Product`, `Order`) e uma tabela associativa (`order_product`) para gerenciar o relacionamento N-para-N.
 
-*(Aqui você deve inserir a imagem do diagrama ER que você gerou no dbdiagram.io)*
+
+<img width="1250" height="280" alt="READMEPNG" src="https://github.com/user-attachments/assets/9bd53a50-8e04-4973-96a2-883c176c7919" />
+
 ![Diagrama ER do Banco de Dados](nome_da_sua_imagem.png)
 
 ---
